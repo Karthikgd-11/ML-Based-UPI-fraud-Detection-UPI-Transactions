@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents %}
+<div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:35px;background:#f5f8fc">
+<div class="auth-card" style="max-width:720px"><h2>Create User Account</h2><div class="sub">Register to use the UPI fraud detection dashboard</div>
+<form action="{% url 'UserRegisterActions' %}" method="POST">{% csrf_token %}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div><label>Name</label>{{ form.name }}</div><div><label>Login ID</label>{{ form.loginid }}</div>
+<div><label>Password</label>{{ form.password }}</div><div><label>Mobile</label>{{ form.mobile }}</div>
+<div><label>Email</label>{{ form.email }}</div><div><label>Locality</label>{{ form.locality }}</div>
+<div><label>Country</label><input value="India" readonly class="location-readonly">{{ form.country }}</div>
+<div><label>State</label><select id="reg-state" name="state" required></select></div>
+<div><label>District</label><select id="reg-district" name="district" required></select></div>
+<div><label>Sub-District / Taluk</label><select id="reg-subdistrict" name="subdistrict" required></select></div>
+<div style="display:none">{{ form.city }}</div>
+<div style="grid-column:1/-1"><label>Address</label>{{ form.address }}</div>
+</div>
+<div id="location-error" class="location-error"></div>
+<button class="auth-btn" type="submit" style="margin-top:18px">Create Account</button>
+{% if form.errors %}<div class="message" style="color:#c0392b">Please correct the highlighted fields below.</div>{% for field in form %}{% for error in field.errors %}<div class="message">{{ field.label }}: {{ error }}</div>{% endfor %}{% endfor %}{% endif %}{% if messages %}{% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}{% endif %}
+</form></div></div>
+<style>
+.auth-card label{display:block;font-size:11px;font-weight:700}.auth-card input,.auth-card textarea,.auth-card select{width:100%;padding:9px;border:1px solid #dfe6ee;border-radius:6px;font-size:11px;margin-top:5px;background:#fff}.location-readonly{font-weight:700;color:#174d8f;background:#f2f7ff!important}.location-error{font-size:11px;color:#c0392b;margin-top:10px}@media(max-width:700px){.auth-card form>div{grid-template-columns:1fr!important}}
+</style>
+{% endblock %}
+{% block extra_scripts %}<script src="{% static 'js/india_location.js' %}"></script><script>initIndiaLocationSelector({stateId:'reg-state',districtId:'reg-district',subdistrictId:'reg-subdistrict',errorId:'location-error'});document.getElementById('reg-subdistrict').addEventListener('change',function(){const city=document.querySelector('input[name="city"]');if(city)city.value=this.value;});</script>{% endblock %}
