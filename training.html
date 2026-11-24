@@ -1,0 +1,5 @@
+{% extends 'users/userbase.html' %}
+{% block contents %}
+<div class="page-title">Model Training</div><div class="page-subtitle">Performance metrics generated from the current UPI fraud dataset.</div>
+<div class="panel"><div class="table-wrap"><table class="ui-table"><thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1 Score</th></tr></thead><tbody>{% for model_name, metrics in results.items %}<tr><td><strong>{{ model_name }}</strong></td><td>{{ metrics.Accuracy }}</td><td>{{ metrics.Precision }}</td><td>{{ metrics.Recall }}</td><td>{{ metrics.F1_Score }}</td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}
